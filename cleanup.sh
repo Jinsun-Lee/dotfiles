@@ -19,13 +19,17 @@ cleaned=0
 remove() {
     local target="$1"
     local desc="$2"
+    local force_rm="${3:-false}"
 
     if [[ -e "$target" ]]; then
         if $DRY_RUN; then
             echo -e "  ${YELLOW}[dry-run]${NC} $desc → $target"
-        else
+        elif [[ "$force_rm" == "true" ]]; then
             rm -rf "$target"
             echo -e "  ${GREEN}[삭제]${NC} $desc → $target"
+        else
+            trash-put "$target"
+            echo -e "  ${GREEN}[휴지통]${NC} $desc → $target"
         fi
         ((cleaned++))
     fi
@@ -63,7 +67,7 @@ remove "$HOME/.local/share/recently-used.xbel" "최근 사용 파일 목록"
 
 # ── Trash ──
 echo -e "${BLUE}[휴지통]${NC}"
-remove "$HOME/.local/share/Trash" "휴지통"
+remove "$HOME/.local/share/Trash" "휴지통" true
 
 # ── 패키지 매니저 캐시 ──
 echo -e "${BLUE}[패키지 매니저]${NC}"
@@ -82,6 +86,7 @@ remove "$HOME/.xsession-errors" "X 세션 에러 로그"
 remove "$HOME/.xsession-errors.old" "X 세션 에러 로그 (이전)"
 remove_glob "$HOME" ".*.swp" "Vim swap 파일"
 remove_glob "$HOME" "*~" "백업 파일 (*~)"
+remove_glob "$HOME" ".*.backup" "dotfile 백업 파일"
 
 # ── 결과 ──
 echo ""
