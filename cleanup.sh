@@ -49,6 +49,10 @@ echo -e "${BLUE}=== 홈 디렉토리 정리 시작 ===${NC}\n"
 echo -e "${BLUE}[wget]${NC}"
 remove "$HOME/.wget-hsts" "HSTS 캐시"
 
+# ── Python ──
+echo -e "${BLUE}[Python]${NC}"
+remove "$HOME/.python_history" "Python 대화형 셸 명령어 기록"
+
 # ── 썸네일 캐시 ──
 echo -e "${BLUE}[썸네일]${NC}"
 remove "$HOME/.cache/thumbnails" "썸네일 캐시"
